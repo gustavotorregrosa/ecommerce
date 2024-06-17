@@ -36,7 +36,48 @@ const pages: {
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
 
-  // const auth = useAuth()
+  const auth = useAuth()
+
+  let _interval: NodeJS.Timeout
+  let _timeout: NodeJS.Timeout
+
+  // useEffect(() => {
+
+  //   clearInterval(_interval)
+  //   _interval = setInterval(() => {
+  //     console.log(auth.showUser())
+  //   }, 3000)
+
+  //   // clearTimeout(_timeout)
+  //   // _timeout = setTimeout(() => {
+  //   //   auth.login({
+  //   //     id: '123',
+  //   //     email: 'gustavo.torregrosa@gmail.com',
+  //   //     name: 'gustavo torregrosa',
+  //   //     access_token: 'gustavo 23456',
+  //   //     access_refresh_token: 'gustavo 098765'
+  //   //   })
+
+  //   // }, 20000)
+    
+
+  //   // setTimeout(() => {
+  //   //   clearInterval(_interval)
+  //   // }, 90000)
+  // }, [])
+
+
+
+  // setTimeout(() => {
+  //   console.log('test 123')
+  //   auth.login({
+  //     id: '123',
+  //     email: 'gustavo.torregrosa@gmail.com',
+  //     name: 'gustavo torregrosa',
+  //     access_token: 'gustavo 23456',
+  //     access_refresh_token: 'gustavo 098765'
+  //   })
+  // }, 10000)
 
   // useEffect(() => {
   //   auth.renewAccessToken('test')

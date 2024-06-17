@@ -6,6 +6,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditModal from './editModal'
 import DeleeteModal from './deleteModal'
 import Head from 'next/head';
+import { useEffect } from 'react';
+import { useAuth } from '@/providers/authProvider';
 
 export interface ICategory {
     id: string
@@ -13,6 +15,23 @@ export interface ICategory {
 }
 
 const Categories = () => {
+
+    const auth = useAuth()
+    // useEffect(() => {
+    //     console.log(auth.showUser())
+    // }, [])
+
+    useEffect(() => {
+        setTimeout(() => {
+            auth.login({
+                id: '1234',
+                email: 'felipe.torregrosa@gmail.com',
+                name: 'felipe torregrosa',
+                access_token: 'felipe 23456',
+                access_refresh_token: 'felipe 098765'
+            })
+        }, 10000)
+    }, [])
 
     const categories: ICategory[] = [
         {
