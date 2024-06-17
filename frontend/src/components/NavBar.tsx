@@ -11,8 +11,11 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import { useRouter } from 'next/router'
 import ThunderstormIcon from '@mui/icons-material/Thunderstorm';
-import { useAuth } from '@/providers/authProvider';
-import { useEffect } from 'react';
+import {login, logout} from '@/store/user/user.slice'
+import { useDispatch } from 'react-redux';
+import { IState } from '@/store';
+import { useSelector } from 'react-redux';
+import { IUser } from '@/store/user/user.interface';
 
 const pages: {
   name: string;
@@ -36,61 +39,16 @@ const pages: {
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
 
-  const auth = useAuth()
-
-  let _interval: NodeJS.Timeout
-  let _timeout: NodeJS.Timeout
-
-  // useEffect(() => {
-
-  //   clearInterval(_interval)
-  //   _interval = setInterval(() => {
-  //     console.log(auth.showUser())
-  //   }, 3000)
-
-  //   // clearTimeout(_timeout)
-  //   // _timeout = setTimeout(() => {
-  //   //   auth.login({
-  //   //     id: '123',
-  //   //     email: 'gustavo.torregrosa@gmail.com',
-  //   //     name: 'gustavo torregrosa',
-  //   //     access_token: 'gustavo 23456',
-  //   //     access_refresh_token: 'gustavo 098765'
-  //   //   })
-
-  //   // }, 20000)
-    
-
-  //   // setTimeout(() => {
-  //   //   clearInterval(_interval)
-  //   // }, 90000)
-  // }, [])
-
-
-
-  // setTimeout(() => {
-  //   console.log('test 123')
-  //   auth.login({
-  //     id: '123',
-  //     email: 'gustavo.torregrosa@gmail.com',
-  //     name: 'gustavo torregrosa',
-  //     access_token: 'gustavo 23456',
-  //     access_refresh_token: 'gustavo 098765'
-  //   })
-  // }, 10000)
-
-  // useEffect(() => {
-  //   auth.renewAccessToken('test')
-  // }, [])
-
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
 
-
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+
+
+  const user = useSelector<IState, IUser>(state => state.user)
 
   const router = useRouter()
   return (
@@ -120,7 +78,7 @@ function ResponsiveAppBar() {
               router.push('/')
             }}
           >
-            Cloud9
+            Cloud9 {user.name}
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>

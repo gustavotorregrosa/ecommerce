@@ -6,8 +6,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditModal from './editModal'
 import DeleeteModal from './deleteModal'
 import Head from 'next/head';
+import { useSelector } from 'react-redux';
+import { IState } from '@/store';
 import { useEffect } from 'react';
-import { useAuth } from '@/providers/authProvider';
+import { useDispatch } from 'react-redux';
+import {login, logout} from '@/store/user/user.slice'
 
 export interface ICategory {
     id: string
@@ -16,22 +19,32 @@ export interface ICategory {
 
 const Categories = () => {
 
-    const auth = useAuth()
+    // const user = useSelector<IState>(state => state.user)
+
+    // let myInterval: NodeJS.Timeout
     // useEffect(() => {
-    //     console.log(auth.showUser())
+    //     clearInterval(myInterval)
+
+    //     myInterval = setInterval(() => {
+    //         console.log({user})
+    //     }, 5000)
     // }, [])
+
+    const dispatch = useDispatch()
 
     useEffect(() => {
         setTimeout(() => {
-            auth.login({
-                id: '1234',
-                email: 'felipe.torregrosa@gmail.com',
-                name: 'felipe torregrosa',
-                access_token: 'felipe 23456',
-                access_refresh_token: 'felipe 098765'
-            })
-        }, 10000)
-    }, [])
+            dispatch(login({
+              id: 'gustavo',
+              email: 'gustavo 2',
+              access_refresh_token: 'guga',
+              access_token: 'test 123',
+              name: 'gusta'
+            
+            }))
+        }, 5000);
+    
+      }, [])
 
     const categories: ICategory[] = [
         {
