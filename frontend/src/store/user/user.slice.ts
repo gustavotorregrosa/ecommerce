@@ -1,7 +1,13 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, Slice, SliceCaseReducers, SliceSelectors, createSlice } from '@reduxjs/toolkit'
 import { IUser } from './user.interface'
 
 interface UserState extends IUser {}
+interface IUserActions {
+    login: (state: UserState, action: PayloadAction<IUser>) => IUser;
+    logout: (state: UserState) => void;
+    renewAccessToken: (state: UserState, action: PayloadAction<string>) => void;
+    renewRefreshAccessToken: (state: UserState, action: PayloadAction<string>) => void;
+}
 
 const initialState: UserState = {
 
