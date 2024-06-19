@@ -15,7 +15,8 @@ const initialState: UserState = {
     name: '',
     email: '',
     access_refresh_token: '',
-    access_token: ''
+    access_token: '',
+    image: ''
 
 }
 
@@ -24,10 +25,8 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         login: (state, action: PayloadAction<IUser>) => {
-            console.log({state})
-            console.log({action})
             state = action.payload
-            return action.payload
+            // return action.payload
         },
 
         logout: (state) => {

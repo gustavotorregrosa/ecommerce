@@ -1,4 +1,5 @@
 import ResponsiveAppBar from "@/components/NavBar";
+import { ConnectionServiceContext } from "@/context/ConnectionContext";
 import { ConnectionService } from "@/services/connectionService";
 import { AppStore, makeStore } from "@/store";
 import "@/styles/globals.css";
@@ -21,10 +22,11 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return <>
     <Provider store={storeRef.current}>
-      <div className="mb-10"><ResponsiveAppBar/></div>
-      <Component {...pageProps} />
+      <ConnectionServiceContext.Provider value={connectionServiceRef.current}>
+        <div className="mb-10"><ResponsiveAppBar/></div>
+        <Component {...pageProps} />
+      </ConnectionServiceContext.Provider>
     </Provider>
-
   </>
   
 }

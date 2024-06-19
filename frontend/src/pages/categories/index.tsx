@@ -30,21 +30,21 @@ const Categories = () => {
     //     }, 5000)
     // }, [])
 
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
 
-    useEffect(() => {
-        setTimeout(() => {
-            dispatch(login({
-              id: 'gustavo',
-              email: 'gustavo 2',
-              access_refresh_token: 'guga',
-              access_token: 'test 123',
-              name: 'gusta'
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         dispatch(login({
+    //           id: 'gustavo',
+    //           email: 'gustavo 2',
+    //           access_refresh_token: 'guga',
+    //           access_token: 'test 123',
+    //           name: 'gusta'
             
-            }))
-        }, 5000);
+    //         }))
+    //     }, 5000);
     
-      }, [])
+    //   }, [])
 
     const categories: ICategory[] = [
         {
