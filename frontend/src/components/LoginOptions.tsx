@@ -21,6 +21,24 @@ export const LoginOptions = () => {
             name: 'Amy Sosa',
             access_refresh_token: '123',
             access_token: '123'
+        },                                      
+
+        {
+            id: '3',
+            email: 'jonah@gmail.com',
+            image: 'jonah.png',
+            name: 'Jonah Simms',
+            access_refresh_token: '123',
+            access_token: '123'
+        },
+
+        {
+            id: '4',
+            email: 'cheyenne@gmail.com',
+            image: 'cheyenne.png',
+            name: 'Cheyenne Lee                                                                                                                                                                                                                                                                                 ',
+            access_refresh_token: '123',
+            access_token: '123'
         }
     ]
 
