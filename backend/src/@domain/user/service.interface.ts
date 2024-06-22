@@ -5,6 +5,7 @@ export interface IUserTransformed {
     id: string
     name: string
     email: string
+    image?: string
 }
 
 export interface IUserService extends IService<User>{

@@ -13,7 +13,7 @@ export class UserTypeOrmRepository implements IUserRepository {
     async findByEmail(email: string): Promise<User> {
         const userEntity = await this.repository.findOneBy({email})
         try {
-            return new User(userEntity.name, userEntity.email, userEntity.passwordHash, userEntity.id)
+            return new User(userEntity.name, userEntity.email, userEntity.passwordHash, userEntity.image, userEntity.id)
         } catch (error) {
             throw new Error('User not found')
         }
@@ -25,13 +25,17 @@ export class UserTypeOrmRepository implements IUserRepository {
         await this.repository.delete(userEntity)
     }
 
-    async insert(user: User): Promise<void> {
-        const userModel = this.repository.create(user)
-        await this.repository.insert(userModel)
+    async insert(user: User): Promise<User> {
+        const userEntity = this.repository.create(user)
+        await this.repository.insert(userEntity)
+        return this.entityToModel(userEntity)
+
     }
 
-    async update({id, name}: User): Promise<void> {
+    async update({id, name}: User): Promise<User> {
         await this.repository.update(id, {name})
+        const categoryUser = await this.findById(id)
+        return this.entityToModel(categoryUser)
     }
 
     async findById(id: string): Promise<User> {
@@ -43,5 +47,11 @@ export class UserTypeOrmRepository implements IUserRepository {
         const userEntities = await this.repository.find()
         return userEntities.map(user => new User(user.name, user.email, user.passwordHash, user.id))
     }
+
+
+    private entityToModel(entity: UserEntity): User {
+        return new User(entity.name, entity.email, entity.passwordHash, entity.image, entity.id)
+    }
+
 
 }

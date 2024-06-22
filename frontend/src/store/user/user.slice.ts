@@ -25,20 +25,32 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         login: (state, action: PayloadAction<IUser>) => {
-            state = action.payload
-            // return action.payload
+            console.log({
+                action
+            })
+            return action.payload
         },
 
         logout: (state) => {
-            state = initialState
+            // state = initialState
+            return initialState
         },
 
         renewAccessToken: (state, action: PayloadAction<string>) => {
-            state.access_token = action.payload
+            // state.access_token = action.payload
+            return {
+                ...state,
+                access_token: action.payload
+            }
         },
 
         renewRefreshAccessToken: (state, action: PayloadAction<string>) => {
-            state.access_refresh_token = action.payload
+            // state.access_refresh_token = action.payload
+            return {
+                ...state,
+                access_refresh_token: action.payload
+            }
+            
         }
     }
 })

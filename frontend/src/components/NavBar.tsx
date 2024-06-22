@@ -14,32 +14,54 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useRouter } from 'next/router'
 import ThunderstormIcon from '@mui/icons-material/Thunderstorm'
+import { useSelector, useDispatch } from 'react-redux';
+import { IState } from '@/store';
+import { IUser } from '@/store/user/user.interface';
+import { logout } from '@/store/user/user.slice';
 
-// const pages = ['Products', 'Pricing', 'Blog'];
-const pages: {
-  name: string;
-  page: string;
-}[] = [
-  {
-    name: 'Categories',
-    page: 'categories'
-  },
-  {
-    name: 'Products',
-    page: 'products'
-  },
-  {
-    name: 'Stock Movimentations',
-    page: 'stockMovimentations'
-  },
-
-]
-
-const settings = ['Logout'];
 
 function ResponsiveAppBar() {
+
+  const pages: {
+    name: string;
+    page: string;
+  }[] = [
+    {
+      name: 'Categories',
+      page: 'categories'
+    },
+    {
+      name: 'Products',
+      page: 'products'
+    },
+    {
+      name: 'Stock Movimentations',
+      page: 'stockMovimentations'
+    },
+  
+  ]
+
+  const user = useSelector<IState, IUser>(state => state.user)
+
+  React.useEffect(() => {
+    !user.id && router.push('/')
+
+  }, [user])
+
+  const dispatch = useDispatch()
+  
+  const settings = [
+    {
+      label: 'Logout',
+      fn: () => dispatch(logout())
+    }
+  ];
+
+
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+
+  
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -118,7 +140,7 @@ function ResponsiveAppBar() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
+              {user.id && pages.map((page) => (
                  <MenuItem key={page.page} onClick={() => {
                     handleCloseNavMenu()
                     router.push(page.page)
@@ -154,7 +176,7 @@ function ResponsiveAppBar() {
             Cloud9
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
+            {user.id && pages.map((page) => (
                 <Button
                   key={page.page}
                   onClick={() => {
@@ -168,10 +190,11 @@ function ResponsiveAppBar() {
             ))}
           </Box>
 
+          {user.id && 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Gemy Sharp" src="/images/users/user_1.jpg" />
+                <Avatar alt="Gemy Sharp" src={`/images/users/${user.image}`} />
               </IconButton>
             </Tooltip>
             <Menu
@@ -191,12 +214,16 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem key={setting.label} onClick={() => {
+                  handleCloseUserMenu()
+                  setting.fn()
+                }}>
+                  <Typography textAlign="center">{setting.label}</Typography>
                 </MenuItem>
               ))}
             </Menu>
-          </Box>
+          </Box>}
+
         </Toolbar>
       </Container>
     </AppBar>

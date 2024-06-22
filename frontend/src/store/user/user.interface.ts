@@ -5,4 +5,5 @@ export interface IUser {
     access_token: string
     access_refresh_token: string
     image: string
+    password?: string
 }

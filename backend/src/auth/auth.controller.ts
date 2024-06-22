@@ -4,7 +4,7 @@ import { AuthService } from './auth.service';
 import { AppExceptionFilter } from 'src/common-infra/exception.filter';
 
 @Controller('auth')
-@UseFilters(new AppExceptionFilter())
+// @UseFilters(new AppExceptionFilter())
 export class AuthController {
 
     constructor(private authService: AuthService){}

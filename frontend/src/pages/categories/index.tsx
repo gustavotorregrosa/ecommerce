@@ -4,13 +4,12 @@ import Button from '@mui/material/Button';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditModal from './editModal'
-import DeleeteModal from './deleteModal'
-import Head from 'next/head';
-import { useSelector } from 'react-redux';
-import { IState } from '@/store';
-import { useEffect } from 'react';
+import DeleteModal from './deleteModal'
+import CreateCategoryModal from './createModal';
+import AddIcon from '@mui/icons-material/Add';
+import { useContext, useEffect, useState } from 'react';
+import { ConnectionServiceContext } from '@/context/ConnectionContext';
 import { useDispatch } from 'react-redux';
-import {login, logout} from '@/store/user/user.slice'
 
 export interface ICategory {
     id: string
@@ -19,70 +18,63 @@ export interface ICategory {
 
 const Categories = () => {
 
-    // const user = useSelector<IState>(state => state.user)
+    const connectionService = useContext(ConnectionServiceContext)
 
-    // let myInterval: NodeJS.Timeout
-    // useEffect(() => {
-    //     clearInterval(myInterval)
+    const [categories, setCategories] = useState<ICategory[]>()
+    const readCategories = async () => {
+        const _categories = await connectionService?.makeRequest<ICategory[]>('category', 'get')
+        console.log({_categories})
+        _categories && setCategories(_categories)
+    }
+    useEffect(() => {
+        readCategories()
+    }, [])
 
-    //     myInterval = setInterval(() => {
-    //         console.log({user})
-    //     }, 5000)
-    // }, [])
-
-    // const dispatch = useDispatch()
-
-    // useEffect(() => {
-    //     setTimeout(() => {
-    //         dispatch(login({
-    //           id: 'gustavo',
-    //           email: 'gustavo 2',
-    //           access_refresh_token: 'guga',
-    //           access_token: 'test 123',
-    //           name: 'gusta'
-            
-    //         }))
-    //     }, 5000);
-    
-    //   }, [])
-
-    const categories: ICategory[] = [
-        {
-            id: '1',
-            name: 'Esporte',
-        },
-        {
-            id: '2',
-            name: 'Culinária'
-        }
-    ]
 
     let openEditModal: (category: ICategory) => void
-    const editCategory = (category: ICategory) => console.log({category})
+    const editCategory = async (category: ICategory) => {
+        try {
+            await connectionService?.makeRequest<ICategory>('category/'+category.id, 'patch', JSON.stringify({name: category.name}))
+        } catch (error) {
+            console.log({error})
+        }
+    
+    }
 
     let openDeleteModal: (category: ICategory) => void
     const deleteCategory = (category: ICategory) => console.log({category})
+
+    let openCreateModal: () => void
+    const createCategory = async (name: string) => {
+        try {
+            await connectionService?.makeRequest<ICategory>('category', 'post', JSON.stringify({name}))
+        } catch (error) {
+            console.log({error})
+        }
+    }
 
     const columns: GridColDef[] = [
         {field: 'name', headerName: 'Category', minWidth: 300},
         {field: 'buttons', headerName: 'Buttons', minWidth: 200, type: 'actions',
         getActions: (category) => {
             return [
-                <Button onClick={() => openEditModal(category.row)} variant="outlined"><ModeEditOutlineIcon /></Button>,
-                <Button onClick={() => openDeleteModal(category.row)} variant="outlined"><DeleteIcon /></Button>
-                
+                <Button variant="outlined" onClick={() => openEditModal(category.row)}><ModeEditOutlineIcon /></Button>,
+                <Button onClick={() => openDeleteModal(category.row)} variant="outlined"><DeleteIcon /></Button>                
             ]
         }}
     ]
 
     return <Container>
+        <Button className='float-right' onClick={() => openCreateModal()} variant="outlined"><AddIcon /></Button>  
         <div className='flex items-center justify-center'>
             <div className='w-6/12'>
-                <DataGrid columns={columns} rows={categories} />
+                {(!!categories?.length) && <DataGrid columns={columns} rows={categories} />}
             </div>
         </div>
+
         <EditModal setOpenEditModalFn={fn => openEditModal = fn} handleEdit={category => editCategory(category)}/>
-        <DeleeteModal handleDelete={category => {deleteCategory(category)}} setOpenDeleteModalFn={fn => openDeleteModal = fn} />
+        <DeleteModal setOpenDeleteModalFn={fn => openDeleteModal = fn}  handleDelete={category => {deleteCategory(category)}}  />
+        <CreateCategoryModal setOpenCreateModalFn={fn => openCreateModal = fn} handleCreate={name => createCategory(name)}  />
     </Container>
 }
 

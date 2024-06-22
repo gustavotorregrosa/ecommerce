@@ -15,13 +15,16 @@ export class CategoryTypeOrmRepository implements ICategoryRepository {
         await this.repository.delete(categoryEntity)
     }
 
-    async insert(category: Category): Promise<void> {
-        const categoryModel = this.repository.create(category)
-        await this.repository.insert(categoryModel)
+    async insert(category: Category): Promise<Category> {
+        const categoryEntity = this.repository.create(category)
+        await this.repository.insert(categoryEntity)
+        return this.entityToModel(categoryEntity)
     }
 
-    async update({id, name}: Category): Promise<void> {
+    async update({id, name}: Category): Promise<Category> {
         await this.repository.update(id, {name})
+        const categoryEntity = await this.findById(id)
+        return this.entityToModel(categoryEntity)
     }
 
     async findById(id: string): Promise<Category> {
@@ -32,6 +35,10 @@ export class CategoryTypeOrmRepository implements ICategoryRepository {
     async getAll(): Promise<Category[]> {
         const categoryEntities = await this.repository.find()
         return categoryEntities.map(cat => new Category(cat.name, cat.id))
+    }
+
+    private entityToModel(entity: CategoryEntity): Category {
+        return new Category(entity.name, entity.id)
     }
 
 }

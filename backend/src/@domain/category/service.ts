@@ -10,11 +10,11 @@ export class CategoryService implements ICategoryService{
         return this.categoryRepository.delete(id)
     }
 
-    insert(category: Category): Promise<void> {
+    insert(category: Category): Promise<Category> {
         return this.categoryRepository.insert(category)      
     }
 
-    update(category: Category): Promise<void> {
+    update(category: Category): Promise<Category> {
         return this.categoryRepository.update(category)
     }
 

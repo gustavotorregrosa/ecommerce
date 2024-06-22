@@ -5,6 +5,7 @@ import { IEditCategoryDTO } from './dto/IEditCategory.dto';
 import { AppExceptionFilter } from 'src/common-infra/exception.filter';
 import { CategoryService } from 'src/@domain/category/service';
 import { AuthService } from 'src/auth/auth.service';
+import { removeUnderlineTransformer } from 'src/common-infra/remove-underline.transformer';
 
 @Controller('category')
 @UseFilters(new AppExceptionFilter())
@@ -16,20 +17,22 @@ export class CategoryController {
 
     @Get()
     async getAllCategories(){
-        return await this.categoryService.getAll()
+        const categories = await this.categoryService.getAll()
+        return removeUnderlineTransformer(categories)
     }
 
     @Post()
     async createCategory(@Body() categoryDTO: ICreateCategoryDTO){
-        const category = new Category(categoryDTO.name)
-        return await this.categoryService.insert(category)
+        const category = await this.categoryService.insert(new Category(categoryDTO.name)) 
+        return removeUnderlineTransformer(category)
     }
 
-    @Patch()
-    async updateCategory(@Body() categoryDTO: IEditCategoryDTO){
-        const category =  await this.categoryService.findById(categoryDTO.id)
+    @Patch(':id')
+    async updateCategory(@Param('id') id: string, @Body() categoryDTO: IEditCategoryDTO){
+        const category =  await this.categoryService.findById(id)
         category.name = categoryDTO.name
-        return await this.categoryService.update(category)
+        await this.categoryService.update(category)
+        return removeUnderlineTransformer(category)
     }
 
     @Get(':id')

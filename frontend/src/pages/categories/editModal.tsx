@@ -20,8 +20,7 @@ const editCategoryModal = ({setOpenEditModalFn, handleEdit}: IEditCategoryModalP
         setCategory(_category)
     }
 
-    setOpenEditModalFn(openModal)
-
+    setOpenEditModalFn && setOpenEditModalFn(openModal)
     const _handleEdit = (category: ICategory) => {
         setOpen(false)
         handleEdit(category)
@@ -63,8 +62,6 @@ const style = {
     transform: 'translate(-50%, -50%)',
     maxWidth: 400,
     bgcolor: 'background.paper',
-    // border: '2px solid #000',
-    // boxShadow: 24,
     p: 4,
   };
 

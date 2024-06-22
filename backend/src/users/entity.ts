@@ -14,5 +14,8 @@ export class UserEntity {
 
     @Column()
     passwordHash: string
+
+    @Column()
+    image: string
   
 }

@@ -10,7 +10,8 @@ export class UserService implements IUserService{
       const userTransformed: IUserTransformed = {
         email: user.email,
         id: user.id,
-        name: user.name
+        name: user.name,
+        image: user.image
       }
 
       return userTransformed
@@ -25,11 +26,11 @@ export class UserService implements IUserService{
         return this.userRepository.delete(id)
     }
 
-    insert(user: User): Promise<void> {
+    insert(user: User): Promise<User> {
         return this.userRepository.insert(user)      
     }
 
-    update(user: User): Promise<void> {
+    update(user: User): Promise<User> {
         return this.userRepository.update(user)
     }
 

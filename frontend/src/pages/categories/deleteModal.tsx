@@ -2,7 +2,7 @@ import { Box, Button } from '@mui/material';
 import Modal from '@mui/material/Modal';;
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { ICategory } from '.';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface IDeleteCategoryModalProps {
     handleDelete: (category: ICategory) => void
@@ -19,7 +19,9 @@ const deleteCategoryModal = ({setOpenDeleteModalFn, handleDelete}: IDeleteCatego
         setCategory(_category)
     }
 
-    setOpenDeleteModalFn(openModal)
+    useEffect(() => {
+        setOpenDeleteModalFn && setOpenDeleteModalFn(openModal)
+    }, [])
 
     const _handlDelete = (category: ICategory) => {
         setOpen(false)
@@ -34,7 +36,7 @@ const deleteCategoryModal = ({setOpenDeleteModalFn, handleDelete}: IDeleteCatego
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <p>Delete the category {category?.name}?&nbsp;&nbsp;&nbsp;&nbsp;<Button onClick={() => _handlDelete(category as ICategory)} variant="outlined" ><DeleteOutlineIcon /></Button></p>=
+                    <p>Delete the category {category?.name}?&nbsp;&nbsp;&nbsp;&nbsp;<Button onClick={() => _handlDelete(category as ICategory)} variant="outlined" ><DeleteOutlineIcon /></Button></p>
                 </Box>
         </Modal>
 
