@@ -40,7 +40,7 @@ export class UserTypeOrmRepository implements IUserRepository {
 
     async findById(id: string): Promise<User> {
         const userEntity = await this.repository.findOneBy({id})
-        return new User(userEntity.name, userEntity.email, userEntity.passwordHash, userEntity.id)
+        return new User(userEntity.name, userEntity.email, userEntity.passwordHash, userEntity.image, userEntity.id)
         
     }
     async getAll(): Promise<User[]> {

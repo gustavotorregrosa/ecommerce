@@ -35,6 +35,7 @@ export class UserService implements IUserService{
     }
 
     findById(id: string): Promise<User> {
+        console.log({id})
         return this.userRepository.findById(id)
     }
 

@@ -9,7 +9,8 @@ import CreateCategoryModal from './createModal';
 import AddIcon from '@mui/icons-material/Add';
 import { useContext, useEffect, useState } from 'react';
 import { ConnectionServiceContext } from '@/context/ConnectionContext';
-import { useDispatch } from 'react-redux';
+
+
 
 export interface ICategory {
     id: string
@@ -19,17 +20,15 @@ export interface ICategory {
 const Categories = () => {
 
     const connectionService = useContext(ConnectionServiceContext)
-
     const [categories, setCategories] = useState<ICategory[]>()
     const readCategories = async () => {
         const _categories = await connectionService?.makeRequest<ICategory[]>('category', 'get')
-        console.log({_categories})
         _categories && setCategories(_categories)
     }
     useEffect(() => {
+
         readCategories()
     }, [])
-
 
     let openEditModal: (category: ICategory) => void
     const editCategory = async (category: ICategory) => {
@@ -71,7 +70,6 @@ const Categories = () => {
                 {(!!categories?.length) && <DataGrid columns={columns} rows={categories} />}
             </div>
         </div>
-
         <EditModal setOpenEditModalFn={fn => openEditModal = fn} handleEdit={category => editCategory(category)}/>
         <DeleteModal setOpenDeleteModalFn={fn => openDeleteModal = fn}  handleDelete={category => {deleteCategory(category)}}  />
         <CreateCategoryModal setOpenCreateModalFn={fn => openCreateModal = fn} handleCreate={name => createCategory(name)}  />
