@@ -11,6 +11,7 @@ import { UserEntity } from './users/entity';
 import { UserAuthMiddleware } from './auth/user-auth/user-auth.middleware';
 import { CategoryController } from './category/category.controller';
 import { AuthService } from './auth/auth.service';
+import { CategoryGateway } from './category/category.gateway';
 
 @Module({
   imports: [
@@ -29,7 +30,7 @@ import { AuthService } from './auth/auth.service';
     UsersModule    
   ],
   controllers: [AppController],
-  providers: [AppService, AuthService, UserService],
+  providers: [AppService, AuthService, UserService, CategoryGateway],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

@@ -16,17 +16,16 @@ export class ConnectionService {
         }
     }
 
-    makeSingleRequest = async <T>(endpoint: string, method: 'get' | 'post' | 'patch', body?: string) => {
+    makeSingleRequest = async <T>(endpoint: string, method: 'get' | 'post' | 'patch' | 'delete', body?: string) => {
         return await fetch(process.env.NEXT_PUBLIC_API_URL + endpoint, {
             headers: this.generateHeaders(),
             method: method.toUpperCase(),
             body,
-            // mode: 'no-cors'
             
         })
     }
 
-    makeRequest = async <T>(endpoint: string, method: 'get' | 'post' | 'patch', body?: string) => {
+    makeRequest = async <T>(endpoint: string, method: 'get' | 'post' | 'patch' | 'delete', body?: string) => {
         let response = await this.makeSingleRequest(endpoint, method, body)
         if(response.status == 401){
             await this.updateUser()

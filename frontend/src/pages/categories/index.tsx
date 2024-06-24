@@ -9,8 +9,7 @@ import CreateCategoryModal from './createModal';
 import AddIcon from '@mui/icons-material/Add';
 import { useContext, useEffect, useState } from 'react';
 import { ConnectionServiceContext } from '@/context/ConnectionContext';
-
-
+import { SocketsContext } from '@/context/SocketsContext';
 
 export interface ICategory {
     id: string
@@ -20,13 +19,13 @@ export interface ICategory {
 const Categories = () => {
 
     const connectionService = useContext(ConnectionServiceContext)
+    const sockets = useContext(SocketsContext)
     const [categories, setCategories] = useState<ICategory[]>()
     const readCategories = async () => {
         const _categories = await connectionService?.makeRequest<ICategory[]>('category', 'get')
         _categories && setCategories(_categories)
     }
     useEffect(() => {
-
         readCategories()
     }, [])
 
@@ -41,7 +40,14 @@ const Categories = () => {
     }
 
     let openDeleteModal: (category: ICategory) => void
-    const deleteCategory = (category: ICategory) => console.log({category})
+    const deleteCategory = async (category: ICategory) => {
+        try {
+            await connectionService?.makeRequest<ICategory>('category/'+category.id, 'delete')
+        } catch (error) {
+            console.log({error})
+        }
+
+    }
 
     let openCreateModal: () => void
     const createCategory = async (name: string) => {

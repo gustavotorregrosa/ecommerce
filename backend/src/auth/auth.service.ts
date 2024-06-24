@@ -42,7 +42,7 @@ export class AuthService {
     const access_token = await this.jwtService.signAsync(user)
     const access_refresh_token = await this.jwtService.signAsync(user, {
       secret: jwtConstants.refreshSecret,
-      expiresIn: '1m'
+      expiresIn: '10m'
     })
 
     return {

@@ -6,11 +6,13 @@ import { CategoryController } from './category.controller';
 import {CategoryService} from 'src/@domain/category/service'
 import { DataSource } from 'typeorm';
 import { AuthModule } from 'src/auth/auth.module';
+import { CategoryGateway } from './category.gateway';
 
 @Module({
     imports: [TypeOrmModule.forFeature([CategoryEntity]), AuthModule],
     providers: [
         CategoryTypeOrmRepository,
+        CategoryGateway,
         {
             provide: CategoryService,
             inject: [getDataSourceToken()],

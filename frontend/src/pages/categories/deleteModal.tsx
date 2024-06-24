@@ -19,9 +19,9 @@ const deleteCategoryModal = ({setOpenDeleteModalFn, handleDelete}: IDeleteCatego
         setCategory(_category)
     }
 
-    useEffect(() => {
-        setOpenDeleteModalFn && setOpenDeleteModalFn(openModal)
-    }, [])
+
+    setOpenDeleteModalFn && setOpenDeleteModalFn(openModal)
+
 
     const _handlDelete = (category: ICategory) => {
         setOpen(false)
