@@ -20,9 +20,10 @@ export class UserTypeOrmRepository implements IUserRepository {
         
     }
     
-    async delete(id: string): Promise<void> {
+    async delete(id: string): Promise<User> {
         const userEntity = await this.repository.findOneBy({id})
         await this.repository.delete(userEntity)
+        return this.entityToModel(userEntity)
     }
 
     async insert(user: User): Promise<User> {

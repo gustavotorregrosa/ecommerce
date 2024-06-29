@@ -13,7 +13,6 @@ export class UserAuthMiddleware implements NestMiddleware {
   constructor(private authService: AuthService) { }
 
   async use(request: IRequestWithUser, response: Response, next: NextFunction) {
-
     try {
         const [type, token] = request.headers.authorization?.split(' ') ?? []
         const {id, email, name} = await this.authService.getUserFromToken(token)

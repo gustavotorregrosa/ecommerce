@@ -10,6 +10,8 @@ import AddIcon from '@mui/icons-material/Add';
 import { useContext, useEffect, useState } from 'react';
 import { ConnectionServiceContext } from '@/context/ConnectionContext';
 import { SocketsContext } from '@/context/SocketsContext';
+import { useSelector } from 'react-redux';
+import { IState } from '@/store';
 
 export interface ICategory {
     id: string
@@ -20,6 +22,7 @@ const Categories = () => {
 
     const connectionService = useContext(ConnectionServiceContext)
     const sockets = useContext(SocketsContext)
+    const user = useSelector<IState>(state => state.user)
     const [categories, setCategories] = useState<ICategory[]>()
     const readCategories = async () => {
         const _categories = await connectionService?.makeRequest<ICategory[]>('category', 'get')
@@ -27,12 +30,34 @@ const Categories = () => {
     }
     useEffect(() => {
         readCategories()
+       
     }, [])
+
+    useEffect(() => {
+        sockets && sockets.category.connect()
+        return () => {
+            sockets && sockets.category.disconnect()
+        }
+    }, [])
+
+    useEffect(() => {
+        const mappedEvent = sockets?.category.on('refresh-categories', event => {
+            console.log({event})
+            readCategories()
+        })
+
+        return () => {
+            mappedEvent?.close()
+        }   
+    }, [])
+
+    
 
     let openEditModal: (category: ICategory) => void
     const editCategory = async (category: ICategory) => {
         try {
             await connectionService?.makeRequest<ICategory>('category/'+category.id, 'patch', JSON.stringify({name: category.name}))
+            sockets && sockets.category.emit('refresh-categories')
         } catch (error) {
             console.log({error})
         }
@@ -43,6 +68,7 @@ const Categories = () => {
     const deleteCategory = async (category: ICategory) => {
         try {
             await connectionService?.makeRequest<ICategory>('category/'+category.id, 'delete')
+            sockets?.category.emit('refresh-categories')
         } catch (error) {
             console.log({error})
         }
@@ -53,6 +79,7 @@ const Categories = () => {
     const createCategory = async (name: string) => {
         try {
             await connectionService?.makeRequest<ICategory>('category', 'post', JSON.stringify({name}))
+            sockets?.category.emit('refresh-categories')
         } catch (error) {
             console.log({error})
         }

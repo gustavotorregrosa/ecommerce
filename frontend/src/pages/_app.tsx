@@ -23,8 +23,14 @@ export default function App({ Component, pageProps }: AppProps) {
     connectionServiceRef.current = new ConnectionService(storeRef.current)
   }
 
+
+  const categorySocket = useRef<Socket>()
+  if(!categorySocket.current){
+    categorySocket.current = io(process.env.NEXT_PUBLIC_API_URL + 'category', {autoConnect: true, reconnection: true})
+  }
+
   const sockets = {
-    category: io(process.env.NEXT_PUBLIC_API_URL + 'category', {autoConnect: true, reconnection: true})
+    category: categorySocket.current
   }
 
   return <>

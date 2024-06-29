@@ -4,6 +4,6 @@ export interface IRepository<T> {
     update(model: T): Promise<T>
     findById(id: string): Promise<T>
     getAll(): Promise<T[]>
-    delete(id: string): Promise<void>
+    delete(id: string): Promise<T>
 
 }

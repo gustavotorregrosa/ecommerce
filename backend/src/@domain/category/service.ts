@@ -6,7 +6,7 @@ export class CategoryService implements ICategoryService{
 
     constructor(private categoryRepository: ICategoryRepository){}
 
-    delete(id: string): Promise<void> {
+    delete(id: string): Promise<Category> {
         return this.categoryRepository.delete(id)
     }
 

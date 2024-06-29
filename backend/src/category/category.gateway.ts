@@ -1,4 +1,4 @@
-import { OnGatewayConnection, OnGatewayInit, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import { OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
 @WebSocketGateway({
@@ -7,24 +7,25 @@ import { Server, Socket } from 'socket.io';
     origin: '*',
   },
 })
-export class CategoryGateway implements OnGatewayInit, OnGatewayConnection {
-
-  handleConnection(client: any, ...args: any[]) {
-   console.log('conectou...')
-   console.log(client.id)
-  }
+export class CategoryGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 
   @WebSocketServer() server: Server;
 
-  afterInit(server: any) {
-    setInterval(() => {
-      console.log(Object.keys(this.server.sockets))
-      
-      // console.log(t≥s.server.sockets)
-    }, 4000)
-    // console.log('test 123 after init')
-    // throw new Error('Method not implemented.');
+  handleDisconnect(client: any) {
+    console.log('disconnected', {client: client.id})
   }
+
+  handleConnection(client: any, ...args: any[]) {
+    console.log('connected', {client: client.id})
+  }
+
+  afterInit(server: any) {}
+
+  @SubscribeMessage('refresh-categories')
+  greeting(client: any, payload: any){
+    this.server.emit('refresh-categories')
+  }
+
   @SubscribeMessage('message')
   handleMessage(client: any, payload: any): string {
     return 'Hello world!';

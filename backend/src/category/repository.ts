@@ -10,9 +10,10 @@ export class CategoryTypeOrmRepository implements ICategoryRepository {
 
     constructor(@InjectRepository(CategoryEntity) private repository: Repository<CategoryEntity>){}
     
-    async delete(id: string): Promise<void> {
+    async delete(id: string): Promise<Category> {
         const categoryEntity = await this.repository.findOneBy({id})
         await this.repository.delete(categoryEntity)
+        return this.entityToModel(categoryEntity) 
     }
 
     async insert(category: Category): Promise<Category> {

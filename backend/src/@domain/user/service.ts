@@ -22,7 +22,7 @@ export class UserService implements IUserService{
         return this.userRepository.findByEmail(email)
     }
 
-    delete(id: string): Promise<void> {
+    delete(id: string): Promise<User> {
         return this.userRepository.delete(id)
     }
 
