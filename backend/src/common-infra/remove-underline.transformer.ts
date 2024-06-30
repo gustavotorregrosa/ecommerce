@@ -12,13 +12,13 @@ const arrayTransformer = (rawDataArray: object[]) => {
 }
 
 
-const individualTransformer = (rawData: object) => {
+const individualTransformer = (rawData: any) => {
 
-    let parsedData = {}
+    let parsedData = rawData ? {} : null
 
-    Object.keys(rawData).map(rawKey => {
+    rawData && Object.keys(rawData).map(rawKey => {
         const parsedKey = (rawKey[0] == '_') ? rawKey.substring(1) : rawKey
-        parsedData[parsedKey] = rawData[rawKey]
+        parsedData[parsedKey] = ((typeof rawData[rawKey]) == 'object') ? individualTransformer(rawData[rawKey]) : rawData[rawKey]
     })
 
     return parsedData

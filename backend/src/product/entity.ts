@@ -10,7 +10,7 @@ export class ProductEntity {
     @Column({unique: true})
     name: string
 
-    @Column()
+    @Column({nullable: true})
     description: string
 
     @ManyToOne(() => Category, category => category.products)

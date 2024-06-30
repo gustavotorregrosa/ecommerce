@@ -6,6 +6,7 @@ import { ProductEntity } from "./entity";
 import { Repository } from "typeorm";
 import { CategoryEntity } from "src/category/entity";
 import { ICreateProductDTO } from "./dto/ICreateProduct.dto";
+import { IEditProductDTO } from "./dto/IEditproduct.dto";
 
 export class ProductTypeORMRepository implements IProductRepository {
 
@@ -13,7 +14,14 @@ export class ProductTypeORMRepository implements IProductRepository {
     
     async createDtoToModel(productDTO: ICreateProductDTO): Promise<Product>{
         const product = new Product(productDTO.name, productDTO.descripion)
-        const category = await this.categoryRepository.findOneBy({id: productDTO.category})
+        const category = await this.categoryRepository.findOneBy({id: productDTO.category.id})
+        product.category = new Category(category.name, category.id)
+        return product
+    }
+
+    async editDtoToModel(productDTO: IEditProductDTO): Promise<Product>{
+        const product = new Product(productDTO.name, productDTO.descripion, productDTO.id)
+        const category = await this.categoryRepository.findOneBy({id: productDTO.category.id})
         product.category = new Category(category.name, category.id)
         return product
     }
@@ -28,13 +36,16 @@ export class ProductTypeORMRepository implements IProductRepository {
     
     async insert(product: Product): Promise<Product> {
         const productEntity = this.productRepository.create(product)
-        const categoryEntity = this.categoryRepository.findOneBy({id: product.category.id })
         await this.productRepository.insert(productEntity)
         return this.entityToModel(productEntity)
     }
 
     async update(model: Product): Promise<Product> {
+        console.log({model})
+        console.log(model.name)
+        console.log(model.id)
         const productEntity = await this.productRepository.findOneBy({id: model.id})
+        console.log({productEntity})
         productEntity.name = model.name
         productEntity.description = model.description
         const categoryEntity = await this.categoryRepository.findOneBy({id: model.category.id})
@@ -49,7 +60,9 @@ export class ProductTypeORMRepository implements IProductRepository {
     }
 
     async getAll(): Promise<Product[]> {
-        const productEntities = await this.productRepository.find()
+        const productEntities = await this.productRepository.find({
+            relations: ['category']
+        })
         return productEntities.map(productEntity => this.entityToModel(productEntity))
     }
 
@@ -67,11 +80,7 @@ export class ProductTypeORMRepository implements IProductRepository {
             product.category = category
         }
 
-        return product
-        
+        return product   
     }
-
-    
-
 
 }

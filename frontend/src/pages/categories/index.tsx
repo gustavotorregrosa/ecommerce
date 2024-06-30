@@ -22,7 +22,7 @@ const Categories = () => {
 
     const connectionService = useContext(ConnectionServiceContext)
     const sockets = useContext(SocketsContext)
-    const user = useSelector<IState>(state => state.user)
+    // const user = useSelector<IState>(state => state.user)
     const [categories, setCategories] = useState<ICategory[]>()
     const readCategories = async () => {
         const _categories = await connectionService?.makeRequest<ICategory[]>('category', 'get')

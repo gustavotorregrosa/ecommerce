@@ -11,9 +11,7 @@ import { removeUnderlineTransformer } from 'src/common-infra/remove-underline.tr
 @UseFilters(new AppExceptionFilter())
 export class CategoryController {
 
-    constructor(private categoryService: CategoryService, private authService: AuthService){
-        // console.log(this.authService.getUserFromRequest())
-    }
+    constructor(private categoryService: CategoryService, private authService: AuthService){}
 
     @Get()
     async getAllCategories(){
@@ -38,7 +36,6 @@ export class CategoryController {
     @Get(':id')
     async getOneCategory(@Param('id') id: string){
         return await this.categoryService.findById(id)
-       
     }
 
     @Delete(':id')

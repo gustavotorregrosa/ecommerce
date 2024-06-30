@@ -1,8 +1,8 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ProductService } from 'src/@domain/products/service';
 import { removeUnderlineTransformer } from 'src/common-infra/remove-underline.transformer';
 import { ICreateProductDTO } from './dto/ICreateProduct.dto';
-import { Product } from 'src/@domain/products/domain';
+import { IEditProductDTO } from './dto/IEditproduct.dto';
 
 @Controller('product')
 export class ProductController {
@@ -18,12 +18,31 @@ export class ProductController {
     @Post()
     async createProduct(@Body() productDTO: ICreateProductDTO){
         const product = await this.productService.createDtoToModel(productDTO)
-        return product
-        await this.productService.insert(new Product(productDTO.name, productDTO.descripion)) 
+        await this.productService.insert(product)
         return removeUnderlineTransformer(product)
     }
 
+    @Patch(':id')
+    async updateProduct(@Param('id') id: string, @Body() productDTO: IEditProductDTO){
+        const productValues = {
+            id,
+            ...productDTO
+        }
+        const product = await this.productService.editDtoToModel(productValues)
+        await this.productService.update(product)
+        return removeUnderlineTransformer(product)
+    }
 
+    @Get(':id')
+    async getOneProduct(@Param('id') id: string){
+        const product = await this.productService.findById(id)
+        return removeUnderlineTransformer(product)
+    }
 
+    @Delete(':id')
+    async deleteCategory(@Param('id') id: string){
+        const product = await this.productService.delete(id)
+        return removeUnderlineTransformer(product)
+    }
 
 }
