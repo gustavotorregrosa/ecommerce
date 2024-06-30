@@ -28,10 +28,6 @@ const Categories = () => {
         const _categories = await connectionService?.makeRequest<ICategory[]>('category', 'get')
         _categories && setCategories(_categories)
     }
-    useEffect(() => {
-        readCategories()
-       
-    }, [])
 
     useEffect(() => {
         sockets && sockets.category.connect()
@@ -41,8 +37,8 @@ const Categories = () => {
     }, [])
 
     useEffect(() => {
+        readCategories()
         const mappedEvent = sockets?.category.on('refresh-categories', event => {
-            console.log({event})
             readCategories()
         })
 

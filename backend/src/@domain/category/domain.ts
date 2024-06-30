@@ -1,4 +1,5 @@
 import { v4 as uuid } from 'uuid';
+import { Product } from '../products/domain';
 
 export class Category {
 
@@ -14,6 +15,12 @@ export class Category {
     
     get name(){
         return this._name
+    }
+
+    private _products: Product[]
+
+    get products(){
+        return this._products
     }
 }
     

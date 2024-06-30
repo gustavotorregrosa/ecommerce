@@ -12,6 +12,8 @@ import { UserAuthMiddleware } from './auth/user-auth/user-auth.middleware';
 import { CategoryController } from './category/category.controller';
 import { AuthService } from './auth/auth.service';
 import { CategoryGateway } from './category/category.gateway';
+import { ProductModule } from './product/product.module';
+import { ProductEntity } from './product/entity';
 
 @Module({
   imports: [
@@ -22,12 +24,13 @@ import { CategoryGateway } from './category/category.gateway';
       username: 'root',
       password: 'root',
       database: 'ecommerce',
-      entities: [CategoryEntity, UserEntity],
+      entities: [CategoryEntity, UserEntity, ProductEntity],
       synchronize: true,
     }),
     CategoryModule,
     AuthModule,
-    UsersModule    
+    UsersModule,
+    ProductModule    
   ],
   controllers: [AppController],
   providers: [AppService, AuthService, UserService, CategoryGateway],
