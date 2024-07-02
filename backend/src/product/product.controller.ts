@@ -1,10 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseFilters } from '@nestjs/common';
 import { ProductService } from 'src/@domain/products/service';
 import { removeUnderlineTransformer } from 'src/common-infra/remove-underline.transformer';
 import { ICreateProductDTO } from './dto/ICreateProduct.dto';
 import { IEditProductDTO } from './dto/IEditproduct.dto';
+import { AppExceptionFilter } from 'src/common-infra/exception.filter';
 
 @Controller('product')
+@UseFilters(new AppExceptionFilter())
 export class ProductController {
 
     constructor(private productService: ProductService){}

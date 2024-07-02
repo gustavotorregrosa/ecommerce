@@ -41,7 +41,7 @@ export class AuthService {
   async userToPayload(user: IUserTransformed): Promise<IUserTransformed & { access_token: string; access_refresh_token: string }> {
     const access_token = await this.jwtService.signAsync(user)
     const access_refresh_token = await this.jwtService.signAsync(user, {
-      secret: jwtConstants.refreshSecret,
+      secret: process.env.JWT_REFRESH_SECRET,
       expiresIn: '10m'
     })
 
@@ -63,7 +63,7 @@ export class AuthService {
   async getUserFromRefreshToken(access_refresh_token: string): Promise<IUserTransformed & { access_token: string; access_refresh_token: string }> {
     try {
       let userTolken: IJWTToken = await this.jwtService.verifyAsync(access_refresh_token, {
-        secret: jwtConstants.refreshSecret,
+        secret: process.env.JWT_REFRESH_SECRET,
       })
 
       const user = await this.userService.findById(userTolken.id)

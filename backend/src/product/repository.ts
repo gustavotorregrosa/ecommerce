@@ -41,11 +41,7 @@ export class ProductTypeORMRepository implements IProductRepository {
     }
 
     async update(model: Product): Promise<Product> {
-        console.log({model})
-        console.log(model.name)
-        console.log(model.id)
         const productEntity = await this.productRepository.findOneBy({id: model.id})
-        console.log({productEntity})
         productEntity.name = model.name
         productEntity.description = model.description
         const categoryEntity = await this.categoryRepository.findOneBy({id: model.category.id})
@@ -68,7 +64,7 @@ export class ProductTypeORMRepository implements IProductRepository {
 
     async delete(id: string): Promise<Product> {
         const productEntitiy = await this.productRepository.findOneBy({id})
-        await this.productRepository.delete(productEntitiy)
+        await this.productRepository.delete(productEntitiy.id)
         return this.entityToModel(productEntitiy) 
     }
 

@@ -95,7 +95,7 @@ const Categories = () => {
     return <Container>
         <Button className='float-right' onClick={() => openCreateModal()} variant="outlined"><AddIcon /></Button>  
         <div className='flex items-center justify-center'>
-            <div className='w-6/12'>
+            <div className='w-8/12 md:w-12/12'>
                 {(!!categories?.length) && <DataGrid columns={columns} rows={categories} />}
             </div>
         </div>

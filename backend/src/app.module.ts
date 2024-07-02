@@ -14,16 +14,24 @@ import { AuthService } from './auth/auth.service';
 import { CategoryGateway } from './category/category.gateway';
 import { ProductModule } from './product/product.module';
 import { ProductEntity } from './product/entity';
+import { ConfigModule } from '@nestjs/config';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+
 
 @Module({
   imports: [
+    EventEmitterModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: ['.env.local', '.env'],
+    }),
     TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'root',
-      database: 'ecommerce',
+      type: process.env.TYPE as 'mysql' | 'postgres',
+      host: process.env.HOST,
+      port: process.env.PORT as unknown as number,
+      username: process.env.USERNAME,
+      password: process.env.PASSWORD,
+      database: process.env.DATABASE,
       entities: [CategoryEntity, UserEntity, ProductEntity],
       synchronize: true,
     }),

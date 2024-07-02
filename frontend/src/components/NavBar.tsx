@@ -18,9 +18,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { IState } from '@/store';
 import { IUser } from '@/store/user/user.interface';
 import { logout } from '@/store/user/user.slice';
+import CampaignIcon from '@mui/icons-material/Campaign';
+
+interface AppBarProps {
+  openSendMessageModal: () => void
+}
 
 
-function ResponsiveAppBar() {
+function ResponsiveAppBar({openSendMessageModal}: AppBarProps) {
 
   const pages: {
     name: string;
@@ -34,10 +39,10 @@ function ResponsiveAppBar() {
       name: 'Products',
       page: 'products'
     },
-    {
-      name: 'Stock Movimentations',
-      page: 'stockMovimentations'
-    },
+    // {
+    //   name: 'Alert',
+    //   page: 'alerts'
+    // },
   
   ]
 
@@ -57,11 +62,8 @@ function ResponsiveAppBar() {
     }
   ];
 
-
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-
-  
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -86,6 +88,7 @@ function ResponsiveAppBar() {
         <Toolbar disableGutters>
           {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
           <ThunderstormIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          
           <Typography
             onClick={() => {
               handleCloseNavMenu()
@@ -110,6 +113,7 @@ function ResponsiveAppBar() {
           >
              Cloud9
           </Typography>
+        
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
@@ -189,6 +193,10 @@ function ResponsiveAppBar() {
               </Button>
             ))}
           </Box>
+
+          <CampaignIcon onClick={() => openSendMessageModal()} style={{
+            cursor: 'pointer'
+          }} /> &nbsp; &nbsp; 
 
           {user.id && 
           <Box sx={{ flexGrow: 0 }}>

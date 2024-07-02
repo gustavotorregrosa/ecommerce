@@ -1,14 +1,14 @@
-import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
 import { OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
-import { Server, Socket } from 'socket.io';
+import { Server } from 'socket.io';
+import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
 
 @WebSocketGateway({
-  namespace: 'category',
+  namespace: 'product',
   cors: {
     origin: '*',
   },
 })
-export class CategoryGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
+export class ProductGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect  {
 
   @WebSocketServer() server: Server;
 
@@ -24,10 +24,20 @@ export class CategoryGateway implements OnGatewayInit, OnGatewayConnection, OnGa
 
   afterInit(server: any) {}
 
+  // @SubscribeMessage('refresh-categories')
+  // refreshCategories(client: any, payload: any){
+  //   this.server.emit('refresh-categories')
+  // }
+
+  // @SubscribeMessage('refresh-products')
+  // refrshProducts(client: any, payload: any){
+  //   this.server.emit('refresh-products')
+  // }
+
   @SubscribeMessage('refresh-categories')
   refreshCategoriesEM(client: any, payload: any){
     this.eventEmitter.emit('refresh-categories')
-    this.eventEmitter.emit('refresh-products')
+    
   }
 
   @OnEvent('refresh-categories')
@@ -35,8 +45,14 @@ export class CategoryGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     this.server.emit('refresh-categories')
   }
 
-  
+  @SubscribeMessage('refresh-products')
+  refreshProductsEM(client: any, payload: any){
+    this.eventEmitter.emit('refresh-products')
+  }
 
-
+  @OnEvent('refresh-products')
+  refreshProductsGW(){
+    this.server.emit('refresh-products')
+  }
 
 }

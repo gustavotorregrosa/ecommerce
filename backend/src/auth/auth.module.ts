@@ -8,13 +8,18 @@ import { DataSource } from 'typeorm';
 import { UserEntity } from 'src/users/entity';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: ['.env.local', '.env'],
+    }),
     JwtModule.register({
       global: true,
-      secret: jwtConstants.secret,
-      signOptions: { expiresIn: '30s' },
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '1m' },
     }),
   ],
   controllers: [AuthController],
