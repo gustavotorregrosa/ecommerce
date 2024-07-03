@@ -14,8 +14,6 @@ import {AlertModal} from '@/components/SendAlertModal'
 
 export default function App({ Component, pageProps }: AppProps) {
 
-
-
   const storeRef = useRef<AppStore>()
   if(!storeRef.current){
     storeRef.current = makeStore()
@@ -28,17 +26,23 @@ export default function App({ Component, pageProps }: AppProps) {
 
   const categorySocket = useRef<Socket>()
   if(!categorySocket.current){
-    categorySocket.current = io(process.env.NEXT_PUBLIC_API_URL + 'category', {autoConnect: true, reconnection: true})
+    categorySocket.current = io(process.env.NEXT_PUBLIC_API_URL + 'category', {autoConnect: true, reconnection: false})
   }
 
   const productSocket = useRef<Socket>()
   if(!productSocket.current){
-    productSocket.current = io(process.env.NEXT_PUBLIC_API_URL + 'product', {autoConnect: true, reconnection: true})
+    productSocket.current = io(process.env.NEXT_PUBLIC_API_URL + 'product', {autoConnect: true, reconnection: false})
+  }
+
+  const messageSocket = useRef<Socket>()
+  if(!messageSocket.current){
+    messageSocket.current = io(process.env.NEXT_PUBLIC_API_URL + 'message', {autoConnect: true, reconnection: false})
   }
 
   const sockets = {
     category: categorySocket.current,
-    product: productSocket.current
+    product: productSocket.current,
+    message: messageSocket.current
   }
 
   let openSendMessageModal: () => void

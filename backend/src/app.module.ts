@@ -16,6 +16,7 @@ import { ProductModule } from './product/product.module';
 import { ProductEntity } from './product/entity';
 import { ConfigModule } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { MessageGateway } from './message/message.gateway';
 
 
 @Module({
@@ -38,10 +39,10 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     CategoryModule,
     AuthModule,
     UsersModule,
-    ProductModule    
+    ProductModule
   ],
   controllers: [AppController],
-  providers: [AppService, AuthService, UserService, CategoryGateway],
+  providers: [AppService, AuthService, UserService, CategoryGateway, MessageGateway],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

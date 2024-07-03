@@ -4,7 +4,6 @@ import { login, logout, renewAccessToken, renewRefreshAccessToken } from "@/stor
 import { EnhancedStore } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 
-
 export class ConnectionService {
 
     constructor(public store: EnhancedStore<IState>) {}
