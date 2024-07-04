@@ -12,29 +12,29 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
 
-  # frontend:
-  #   volumes:
-  #     - ./frontend:/frontend
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: Dockerfile.local
-  #   ports:
-  #     - 3000:3000
-  #   platform: linux/amd64
-  #   env_file:
-  #     - ./frontend/.env.local
+  frontend:
+    # volumes:
+    #   - ./frontend:/frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.local
+    ports:
+      - 3008:3000
+    platform: linux/amd64
+    env_file:
+      - ./frontend/.env.development
 
-  # backend:
-  #   volumes:
-  #     - ./backend:/backend
-  #   build:
-  #     context: ./backend
-  #     dockerfile: Dockerfile.local
-  #   ports:
-  #     - 3000:3000
-  #   platform: linux/amd64
-  #   # env_file:
-  #   #   - ./backend/.env.local
+  backend:
+    # volumes:
+    #   - ./backend:/backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.local
+    ports:
+      - 3009:3000
+    platform: linux/amd64
+    env_file:
+      - ./backend/.env.local
 
 volumes:
   mysql_data:

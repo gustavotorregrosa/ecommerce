@@ -2,7 +2,6 @@ import { v4 as uuid } from 'uuid';
 import { Category } from '../category/domain';
 
 export class Product {
-    product: Promise<import("/Users/gustavo/projects/e-commerce/backend/src/category/entity").CategoryEntity>;
 
     constructor(private _name: string, private _description: string, private _id: string = uuid()){}
 

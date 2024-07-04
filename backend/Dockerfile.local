@@ -1,7 +1,7 @@
 FROM node:latest
-WORKDIR /frontend
+WORKDIR /backend
 COPY . .
 RUN npm install
 # ENTRYPOINT ["tail", "-f", "/dev/null"]
 
-ENTRYPOINT ["npm", "run", "dev"]
+ENTRYPOINT ["npm", "run", "start:dev"]
